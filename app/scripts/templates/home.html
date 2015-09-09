@@ -1,0 +1,50 @@
+<div class="container">
+	<div class="row centered">
+		<select class="dropdownProjects">
+		  <%for(var num = 0; num < proyectos.length; num++){%>
+		  	<option value=<%=proyectos[num]%>><%=proyectos[num]%></option>	
+		  <%}%>
+		</select>
+		<br>
+		<select class="dropdownTorre" disabled="disabled">
+		  	<option value="null">Seleccione un Proyecto</option>	
+		</select>
+		<br>
+		<select class="dropdownUnidad" disabled="disabled">
+		  	<option value="null">Seleccione una Torre</option>	
+		</select>
+		<br>
+		<select class="dropdownComun" disabled="disabled">
+		  	<option value="null">Seleccione una Unidad</option>	
+		</select>
+	</div>
+	<div class="row white centered">
+		<h1 class="centered title-border">Horario de la cancha</h1>
+		<br>
+		<br>
+		<div class="col-lg-2 centered">
+			<h3>Horas<h3>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->
+		<div class="col-lg-1 centered">
+			<h4><span type="button" class="modalButton" data-toggle="modal" data-target="#fecha">Fecha</span></h4>
+		</div><!-- col-lg-1 -->		
+	</div><!-- row -->
+</div>

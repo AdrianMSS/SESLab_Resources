@@ -1,0 +1,121 @@
+<div class="row col-xs-12 center">
+	<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" data-toggle="modal" data-target="#typeModal">
+	  Añadir Familia
+	</button>
+	<br>
+	<br>
+	<span id="checkBadge" class="material-icons mdl-badge hidden" data-badge="+1">check_circle</span>
+	<br>
+  <div class="tableDiv">
+  	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+  	  <thead>
+  	    <tr>
+  	      <th class="mdl-data-table__cell--non-numeric">ID</th>
+  	      <th>Nombre</th>
+  	      <th>Descripción</th>
+          <th>Tipo de Recurso</th>
+  	      <th>Cantidad Modelos</th>
+          <th>Tipo de Elemento</th>
+  	      <th>Editar</th>
+  	      <th>Eliminar</th>
+  	    </tr>
+  	  </thead>
+  	  <tbody>
+        <% _.each(models, function(obj) {%>
+          <% _.each(obj.attributes.families, function(i) {%>
+    		    <tr>
+    		      <td class="mdl-data-table__cell--non-numeric"><%=i.ID%></td>
+    		      <td><%=i.name%></td>
+    		      <td><%=i.description%></td>
+              <td><%=obj.attributes.name%></td>
+              <td><%=i.models.length%></td>
+              <td><%if(parseInt(i.consumptionType) === 1){%>Consumo<%}else{%>Generación<%}%></td>
+    		      <td>
+    	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.ID+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+    	    	  </td>
+    	          <td><li type="button" class="delete" value=<%=i.ID%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+    		    </tr>
+          <%});%>
+  		  <%});%>
+  	  </tbody>
+  	</table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeModal">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Añadir Familia</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Nombre</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <input type="text" class="familyName" maxlength="30"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Tipo de Recurso</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <select class="familyType">
+              <% _.each(models, function(i) {%>
+                <option value=<%= i.attributes._id%>><%= i.attributes.name%></option>
+              <%});%>
+            </select>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Descripción</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="text" class="familyDescription" maxlength="30"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Tipo de Elemento</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <select class="familyConsumption">
+                <option value=1>Consumo</option>
+                <option value=-1>Generación</option>
+            </select>
+          </div>
+          <br>
+          <br>
+        </div>
+      </div>  
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary saveFamily" id="buttonFile">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // When the document is ready
+  $(document).ready(function () {
+      
+    $( ".glyphicon-plus" ).tooltip();
+
+    $( ".glyphicon-pencil" ).tooltip();
+
+    $( ".glyphicon-remove" ).tooltip();
+  
+  });
+</script>

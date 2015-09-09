@@ -1,0 +1,25 @@
+{
+  "name": "Rolo",
+  "version": "0.0.0",
+  "dependencies": {
+    "express": "3.x",
+    "nodemailer": "*",
+    "underscore": "*",
+    "winston": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "cookie-session": "*"
+	},
+  "devDependencies": {
+    "express": "3.x",
+    "nodemailer": "*",
+    "underscore": "*",
+    "winston": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "cookie-session": "*"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
