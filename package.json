@@ -8,7 +8,9 @@
     "winston": "*",
     "cookie-parser": "*",
     "body-parser": "*",
-    "cookie-session": "*"
+    "cron": "*",
+    "cookie-session": "*",
+    "fs": "*"
 	},
   "devDependencies": {
     "express": "3.x",
@@ -17,7 +19,9 @@
     "winston": "*",
     "cookie-parser": "*",
     "body-parser": "*",
-    "cookie-session": "*"
+    "cron": "*",
+    "cookie-session": "*",
+    "fs": "*"
   },
   "engines": {
     "node": ">=0.10.0"

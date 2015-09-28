@@ -6,14 +6,16 @@ define([
   'views/home',
   'views/types',
   'views/families',
+  'views/devices',
   'views/models'
-], function ($, Backbone, navbarView, homeView, typesView, familiesView, modelsView) {
+], function ($, Backbone, navbarView, homeView, typesView, familiesView, devicesView, modelsView) {
   'use strict';
 
   var NavbarView = new navbarView(),
     HomeView = new homeView(),
     TypesView = new typesView(),
     FamiliesView = new familiesView(),
+    DevicesView = new devicesView(),
     ModelsView = new modelsView(),
     nowView = undefined,
     Router = Backbone.Router.extend({
@@ -23,7 +25,7 @@ define([
           'types': 'types',
           'families': 'families',
           'models': 'models',
-          'confirmacion': 'con'
+          'devices': 'devices'
       },
 
       initialize: function() {
@@ -62,8 +64,12 @@ define([
         ModelsView.resourcesFetch(ModelsView);
       },
 
-      con: function() {
-          console.log("confirmación");
+      devices: function() {
+        if(nowView){
+          nowView.clear();
+        }
+        nowView = DevicesView;
+        DevicesView.resourcesFetch(DevicesView);
       }
   });
   return Router;

@@ -37,10 +37,11 @@ require.config({
         layoutmanager:   '../bower_components/layoutmanager/backbone.layoutmanager',
         amplify: '../bower_components/amplify/lib/amplify',
         text: '../bower_components/text/text',
+        jquery_form: '../bower_components/jquery_form/jquery.form',
         componentHandler: '../bower_components/googlecomponentHandler/material',
         
         //Collections
-        apartCollection: 'collections/apart',
+        devicesCollection: 'collections/devices',
         resourcesCollection: 'collections/resources'
     }
 });

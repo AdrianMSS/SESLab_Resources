@@ -14,6 +14,7 @@
   	      <th>Nombre</th>
   	      <th>Descripción</th>
   	      <th>Cantidad Familias</th>
+          <th>Imagen</th>
   	      <th>Editar</th>
   	      <th>Eliminar</th>
   	    </tr>
@@ -24,7 +25,8 @@
   		      <td class="mdl-data-table__cell--non-numeric"><%=i.attributes._id%></td>
   		      <td><%=i.attributes.name%></td>
   		      <td><%=i.attributes.description%></td>
-  		      <td><%=i.attributes.families.length%></td>
+  		      <td><%=i.attributes.families.length%></td>    
+            <td><img class="tableImage" src=<%=i.attributes.image%> /></td>
   		      <td>
   	    		<span type="button" class="edit" value=<%=i.attributes._id%> data-toggle="modal" <%var modalId = '#'+i.attributes._id+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
   	    	  </td>
@@ -61,6 +63,22 @@
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="text" class="typeDescription" maxlength="30"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Infográfico</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <form id="uploadForm"
+                  enctype="multipart/form-data"
+                  action="/imageNew"
+                  method="post">
+              <input type="file" id="userPhotoInput" name="userPhoto" />
+            </form>
+            <img id="uploadedImage" />
           </div>
           <br>
           <br>

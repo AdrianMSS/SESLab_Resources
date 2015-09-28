@@ -1,0 +1,140 @@
+<div class="row col-xs-12 center">
+	<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" data-toggle="modal" data-target="#typeModal">
+	  Añadir Dispositivo
+	</button>
+	<br>
+	<br>
+	<span id="checkBadge" class="material-icons mdl-badge hidden" data-badge="+1">check_circle</span>
+	<br>
+  <div class="tableDiv">
+  	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+  	  <thead>
+  	    <tr>
+  	      <th class="mdl-data-table__cell--non-numeric">ID</th>
+  	      <th>Tipo</th>
+          <th>Familia</th>
+  	      <th>Modelo</th>
+  	      <th>Descripción</th>
+          <th>Locación</th>
+  	      <th>Editar</th>
+  	      <th>Eliminar</th>
+  	    </tr>
+  	  </thead>
+  	  <tbody>
+        <% _.each(devices, function(i) {%>
+  		    <tr>
+  		      <td class="mdl-data-table__cell--non-numeric"><%=i.attributes.ID%></td>
+  		      <td><%=types[i.attributes.type]%></td>
+            <td><%=families[i.attributes.family]%></td>
+  		      <td><%=models[i.attributes.model]%></td>
+            <td><%=i.attributes.description%></td>
+            <td><%=i.attributes.location%></td>
+  		      <td>
+  	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.attributes._id+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+  	    	  </td>
+  	          <td><li type="button" class="delete" value=<%=i.attributes._id%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+  		    </tr>
+  		  <%});%>
+  	  </tbody>
+  	</table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeModal">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Añadir Dispositivo</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Identificador</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <input type="text" class="deviceId" maxlength="30"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Tipo</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <select class="deviceType">
+              <% _.each(types, function(i, keys) {%>
+                <option value=<%=keys%>><%=i%></option>
+              <%});%>
+            </select>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Familia</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <select class="deviceFamily" disabled>
+              <option value=false>Seleccione un Tipo de Recurso</option>
+            </select>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Modelo</label>
+          </div> 
+          <div class="col-xs-4 col-sm-4">
+            <select class="deviceModel" disabled>
+              <option value=false>Seleccione un Tipo de Familia</option>
+            </select>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Descripción</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="text" class="deviceDescription" maxlength="80"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Locación</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="text" class="deviceLocation" maxlength="50"></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+      </div>  
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary saveDevice" id="buttonFile">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // When the document is ready
+  $(document).ready(function () {
+      
+    $( ".glyphicon-plus" ).tooltip();
+
+    $( ".glyphicon-pencil" ).tooltip();
+
+    $( ".glyphicon-remove" ).tooltip();
+  
+  });
+</script>

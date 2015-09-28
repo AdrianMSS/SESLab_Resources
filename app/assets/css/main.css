@@ -671,3 +671,11 @@ li.delete{
 .tableDiv{
     overflow: auto;
 }
+#uploadedImage {
+    max-width: 150px;
+    max-height: 150px;
+}
+.tableImage{
+    max-width: 50px;
+    max-height: 50px;
+}
