@@ -12,8 +12,11 @@ define([
     el: '.content',
     families_template: _.template(families_template),
     hidden: true,
+    imgPath:'null',
     events: {
-      'click .saveFamily': 'saveFamily'
+      'click .saveFamily': 'saveFamily',
+      'submit #uploadForm': 'submitImage',
+      'change #userPhotoInput': 'checkIt'
     },
 
     initialize: function (options) {
@@ -57,7 +60,8 @@ define([
         familyName = $( '.familyName' ).val(),
         familyType = $( '.familyType' ).val(),
         familyDescription = $( '.familyDescription' ).val(),
-        familyConsumption = $( '.familyConsumption' ).val();
+        familyConsumption = $( '.familyConsumption' ).val(),
+        familyImage = this.imgPath;
       $.ajax({ 
         url: 'families',
         type: 'POST',
@@ -65,7 +69,8 @@ define([
           'name' : familyName,
           'description' : familyDescription,
           'consumptionType' : familyConsumption,
-          'type' : familyType
+          'type' : familyType,
+          'image': familyImage
         }),
         beforeSend : setHeader,
         complete: function(res){
@@ -77,6 +82,24 @@ define([
           //console.log(eval('(' + e.responseText + ')').name);
         }.bind(this)
       });
+    },
+
+    submitImage: function(e){
+      var that = this;
+      $("#uploadForm").ajaxSubmit({ 
+        error: function(xhr) {
+          console.log(xhr.status);
+        },
+        success: function(res) {
+          that.imgPath = res.path;
+          $('#uploadedImage').attr('src', res.path);
+        }
+      });
+      return false;
+    },
+
+    checkIt: function(e){
+      $( "#uploadForm" ).submit();
     },
 
     addHidden: function(idMsg) {

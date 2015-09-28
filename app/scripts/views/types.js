@@ -55,7 +55,6 @@ define([
     },
 
     saveType: function(e){
-      console.log(this.imgPath);
       e.preventDefault();
       var setHeader = function(req){
         req.setRequestHeader('content-type', 'application/json');

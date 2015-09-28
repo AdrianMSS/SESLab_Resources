@@ -16,6 +16,7 @@
           <th>Tipo de Recurso</th>
   	      <th>Cantidad Modelos</th>
           <th>Tipo de Elemento</th>
+          <th>Imagen</th>
   	      <th>Editar</th>
   	      <th>Eliminar</th>
   	    </tr>
@@ -30,6 +31,7 @@
               <td><%=obj.attributes.name%></td>
               <td><%=i.models.length%></td>
               <td><%if(parseInt(i.consumptionType) === 1){%>Consumo<%}else{%>Generación<%}%></td>
+              <td><img class="tableImage" src=<%=i.image%> /></td>
     		      <td>
     	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.ID+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
     	    	  </td>
@@ -56,7 +58,7 @@
             <label>Nombre</label>
           </div> 
           <div class="col-xs-4 col-sm-4">
-            <input type="text" class="familyName" maxlength="30"></input> 
+            <input type="text" class="familyName" maxlength="40"></input> 
           </div>
           <br>
           <br>
@@ -80,7 +82,7 @@
             <label>Descripción</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
-            <input type="text" class="familyDescription" maxlength="30"></input> 
+            <input type="text" class="familyDescription" maxlength="80"></input> 
           </div>
           <br>
           <br>
@@ -94,6 +96,22 @@
                 <option value=1>Consumo</option>
                 <option value=-1>Generación</option>
             </select>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Infográfico</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <form id="uploadForm"
+                  enctype="multipart/form-data"
+                  action="/imageNew"
+                  method="post">
+              <input type="file" id="userPhotoInput" name="userPhoto" />
+            </form>
+            <img id="uploadedImage" />
           </div>
           <br>
           <br>
