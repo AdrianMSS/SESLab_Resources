@@ -17,7 +17,11 @@ define([
     events: {
       'click .saveType': 'saveType',
       'submit #uploadForm': 'submitImage',
-      'change #userPhotoInput': 'checkIt'
+      'change #userPhotoInput': 'checkIt',
+      'submit .uploadForm': 'submitEdit',
+      'change .userPhotoInput': 'checkEdit',
+      'click .saveEdit': 'saveEdit',
+      'click .delete': 'deleteType'
     },
 
     initialize: function (options) {
@@ -82,6 +86,38 @@ define([
       });
     },
 
+
+
+    saveEdit: function(e){
+      e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+      typeName = $( '.'+e.currentTarget.value+'typeName' ).val(),
+      typeDescription = $( '.'+e.currentTarget.value+'typeDescription' ).val(),
+      typeImage = $( '#'+e.currentTarget.value+'uploadedImage' ).attr('src'),
+      typeID = e.currentTarget.id.split('I')[0];
+      $.ajax({ 
+        url: 'types',
+        type: 'PUT',
+        data: JSON.stringify({
+          'name' : typeName,
+          'description' : typeDescription,
+          'image': typeImage,
+          '_id': typeID
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
+    },
+
     submitImage: function(e){
       var that = this;
       $("#uploadForm").ajaxSubmit({ 
@@ -98,6 +134,51 @@ define([
 
     checkIt: function(e){
       $( "#uploadForm" ).submit();
+    },
+
+    submitEdit: function(e){
+      var that = this,
+        modelID = '#'+e.currentTarget.id,
+        modelImg = '#'+e.currentTarget.id.split('u')[0]+'uploadedImage';
+      $(modelID).ajaxSubmit({ 
+        error: function(xhr) {
+          console.log(xhr.status);
+        },
+        success: function(res) {
+          that.imgPath = res.path;
+          $(modelImg).attr('src', res.path);
+        }
+      });
+      return false;
+    },
+
+    checkEdit: function(e){
+      var modelID = '#'+e.currentTarget.id.split('P')[0]+'uploadForm';
+      $( modelID ).submit();
+    },
+
+    deleteType: function(e){
+      e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+        typeID = e.currentTarget.id.split('D')[0];
+      $.ajax({ 
+        url: 'types',
+        type: 'DELETE',
+        data: JSON.stringify({
+          '_id': typeID
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
     },
 
     addHidden: function(idMsg) {

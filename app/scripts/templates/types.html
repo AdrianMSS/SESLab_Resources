@@ -20,7 +20,8 @@
   	    </tr>
   	  </thead>
   	  <tbody>
-  	  	<% _.each(models, function(i) {%>
+  	  	<% var modalId = 0;
+         _.each(models, function(i) {%>
   		    <tr>
   		      <td class="mdl-data-table__cell--non-numeric"><%=i.attributes._id%></td>
   		      <td><%=i.attributes.name%></td>
@@ -28,16 +29,15 @@
   		      <td><%=i.attributes.families.length%></td>    
             <td><img class="tableImage" src=<%=i.attributes.image%> /></td>
   		      <td>
-  	    		<span type="button" class="edit" value=<%=i.attributes._id%> data-toggle="modal" <%var modalId = '#'+i.attributes._id+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+  	    		<span type="button" class="edit" value=<%=modalId%> data-toggle="modal" data-target=<%='#'+modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
   	    	  </td>
-  	          <td><li type="button" class="delete" value=<%=i.attributes._id%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+  	          <td><li type="button" class="delete" id=<%=i.attributes._id+"Delete"%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
   		    </tr>
-  		<%});%>
+  		<%modalId++;});%>
   	  </tbody>
   	</table>
   </div>
 </div>
-
 
 <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -62,14 +62,14 @@
             <label>Descripción</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
-            <input type="text" class="typeDescription" maxlength="80"></input> 
+             <textarea rows="4" cols="50" class="typeDescription"></textarea> 
           </div>
           <br>
           <br>
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Infográfico</label>
+            <label>Pictograma</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <form id="uploadForm"
@@ -91,6 +91,63 @@
     </div>
   </div>
 </div>
+
+<% var modalID = 0;
+_.each(models, function(i) {%>
+  <div class="modal fade" id=<%=modalID%> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" class="closeModal">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Editar Tipo</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Nombre</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <input type="text" class=<%=modalID + "typeName"%> maxlength="40" value="<%=i.attributes.name%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Descripción</label>
+            </div> 
+            <div class="col-xs-6 col-sm-6">
+              <textarea rows="4" cols="50" class=<%=modalID + "typeDescription"%>><%=i.attributes.description%></textarea> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Pictograma</label>
+            </div> 
+            <div class="col-xs-6 col-sm-6">
+              <form id=<%=modalID+"uploadForm"%>
+                      class="uploadForm"
+                      enctype="multipart/form-data"
+                      action="/imageNew"
+                      method="post">
+                  <input type="file" class="userPhotoInput" id=<%=modalID+"PhotoInput"%> name="userPhoto" />
+                </form>
+                <img class="uploadedImage" id=<%=modalID + "uploadedImage"%> src=<%=i.attributes.image%> />
+            </div>
+            <br>
+            <br>
+          </div>
+        </div>  
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary saveEdit" value=<%=modalID%> id=<%=i.attributes._id+"ID"%>>Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<%modalID++;});%>
 
 <script type="text/javascript">
   // When the document is ready

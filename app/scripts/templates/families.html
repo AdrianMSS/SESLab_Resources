@@ -22,7 +22,8 @@
   	    </tr>
   	  </thead>
   	  <tbody>
-        <% _.each(models, function(obj) {%>
+        <% var modalId = 0;
+        _.each(models, function(obj) {%>
           <% _.each(obj.attributes.families, function(i) {%>
     		    <tr>
     		      <td class="mdl-data-table__cell--non-numeric"><%=i.ID%></td>
@@ -33,11 +34,11 @@
               <td><%if(parseInt(i.consumptionType) === 1){%>Consumo<%}else{%>Generación<%}%></td>
               <td><img class="tableImage" src=<%=i.image%> /></td>
     		      <td>
-    	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.ID+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+    	    		<span type="button" class="edit" value=<%=modalId%> data-toggle="modal" data-target=<%='#'+modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
     	    	  </td>
-    	          <td><li type="button" class="delete" value=<%=i.ID%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+    	          <td><li type="button" class="delete" id=<%=i.ID+"Delete"%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
     		    </tr>
-          <%});%>
+          <%modalId++;});%>
   		  <%});%>
   	  </tbody>
   	</table>
@@ -82,7 +83,7 @@
             <label>Descripción</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
-            <input type="text" class="familyDescription" maxlength="80"></input> 
+            <textarea rows="4" cols="50" class="familyDescription"></textarea> 
           </div>
           <br>
           <br>
@@ -102,7 +103,7 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Infográfico</label>
+            <label>Pictograma</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <form id="uploadForm"
@@ -124,6 +125,93 @@
     </div>
   </div>
 </div>
+
+
+<% var modalID = 0;
+  _.each(models, function(obj) {%>
+  <% _.each(obj.attributes.families, function(i) {%>  
+    <div class="modal fade" id=<%=modalID%> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" class="closeModal">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Editar Familia</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">       
+              <div class="col-xs-5 col-sm-5">            
+                <label>Nombre</label>
+              </div> 
+              <div class="col-xs-4 col-sm-4">
+                <input type="text" class=<%=modalID + "familyName"%> maxlength="40" value="<%=i.name%>"></input> 
+              </div>
+              <br>
+              <br>              
+            </div>
+            <div class="row">       
+              <div class="col-xs-5 col-sm-5">            
+                <label>Tipo de Recurso</label>
+              </div> 
+              <div class="col-xs-4 col-sm-4">
+                <select class=<%=modalID + "familyType"%>>
+                  <% _.each(models, function(e) {%>
+                    <option value=<%= e.attributes._id%> <%if(parseInt(i.type) === e.attributes._id){%>selected<%}else{}%>><%= e.attributes.name%></option>
+                  <%});%>
+                </select>
+              </div>
+              <br>
+              <br>
+            </div>
+            <div class="row">       
+              <div class="col-xs-5 col-sm-5">            
+                <label>Descripción</label>
+              </div> 
+              <div class="col-xs-6 col-sm-6">
+                <textarea rows="4" cols="50" class=<%=modalID + "familyDescription"%>><%=i.description%></textarea> 
+              </div>
+              <br>
+              <br>
+            </div>
+            <div class="row">       
+              <div class="col-xs-5 col-sm-5">            
+                <label>Tipo de Elemento</label>
+              </div> 
+              <div class="col-xs-6 col-sm-6">
+                <select class=<%=modalID + "familyConsumption"%>>
+                    <option value=1 <%if(parseInt(i.consumptionType) === 1){%>selected<%}%>>Consumo</option>
+                    <option value=-1 <%if(parseInt(i.consumptionType) === -1){%>selected<%}%>>Generación</option>
+                </select>
+              </div>
+              <br>
+              <br>
+            </div>
+            <div class="row">       
+              <div class="col-xs-5 col-sm-5">            
+                <label>Pictograma</label>
+              </div> 
+              <div class="col-xs-6 col-sm-6">
+                <form id=<%=modalID+"uploadForm"%>
+                      class="uploadForm"
+                      enctype="multipart/form-data"
+                      action="/imageNew"
+                      method="post">
+                  <input type="file" class="userPhotoInput" id=<%=modalID+"PhotoInput"%> name="userPhoto" />
+                </form>
+                <img class="uploadedImage" id=<%=modalID + "uploadedImage"%> src=<%=i.image%> />
+              </div>
+              <br>
+              <br>
+            </div>
+          </div>  
+          <div class="modal-footer">        
+            <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary saveEdit" value=<%=modalID%> id=<%=i.ID%>>Editar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%modalID++;});%>
+<%});%> 
 
 <script type="text/javascript">
   // When the document is ready

@@ -16,7 +16,11 @@ define([
     events: {
       'click .saveFamily': 'saveFamily',
       'submit #uploadForm': 'submitImage',
-      'change #userPhotoInput': 'checkIt'
+      'change #userPhotoInput': 'checkIt',
+      'submit .uploadForm': 'submitEdit',
+      'change .userPhotoInput': 'checkEdit',
+      'click .saveEdit': 'saveEdit',
+      'click .delete': 'deleteFamily'
     },
 
     initialize: function (options) {
@@ -84,6 +88,40 @@ define([
       });
     },
 
+    saveEdit: function(e){
+      e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+      familyName = $( '.'+e.currentTarget.value+'familyName' ).val(),
+      familyType = $( '.'+e.currentTarget.value+'familyType' ).val(),
+      familyDescription = $( '.'+e.currentTarget.value+'familyDescription' ).val(),
+      familyConsumption = $( '.'+e.currentTarget.value+'familyConsumption' ).val(),
+      familyImage = $( '#'+e.currentTarget.value+'uploadedImage' ).attr('src'),
+      familyID = e.currentTarget.id;
+      $.ajax({ 
+        url: 'families',
+        type: 'PUT',
+        data: JSON.stringify({
+          'name' : familyName,
+          'description' : familyDescription,
+          'consumptionType' : familyConsumption,
+          'type' : familyType,
+          'image': familyImage,
+          'ID': familyID
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
+    },
+
     submitImage: function(e){
       var that = this;
       $("#uploadForm").ajaxSubmit({ 
@@ -100,6 +138,50 @@ define([
 
     checkIt: function(e){
       $( "#uploadForm" ).submit();
+    },
+
+    submitEdit: function(e){
+      var that = this,
+        modelID = '#'+e.currentTarget.id,
+        modelImg = '#'+e.currentTarget.id.split('u')[0]+'uploadedImage';
+      $(modelID).ajaxSubmit({ 
+        error: function(xhr) {
+          console.log(xhr.status);
+        },
+        success: function(res) {
+          that.imgPath = res.path;
+          $(modelImg).attr('src', res.path);
+        }
+      });
+      return false;
+    },
+
+    checkEdit: function(e){
+      var modelID = '#'+e.currentTarget.id.split('P')[0]+'uploadForm';
+      $( modelID ).submit();
+    },
+
+    deleteFamily: function(e){e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+        familyID = e.currentTarget.id.split('D')[0];
+      $.ajax({ 
+        url: 'families',
+        type: 'DELETE',
+        data: JSON.stringify({
+          'ID': familyID
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
     },
 
     addHidden: function(idMsg) {

@@ -42,11 +42,17 @@ app.use(express.static(__dirname + '/app'));
 
 app.get('/resources',  dbapp.getResources);
 
-app.post('/families',  dbapp.addFamilie);
-app.post('/types',  dbapp.addType);
+app.post('/families',  dbapp.addFamily);
+app.put('/families',  dbapp.updateFamily);
+app.delete('/families',  dbapp.deleteFamily);
 
-app.get('/models',  dbapp.checkResources);
+app.post('/types',  dbapp.addType);
+app.put('/types',  dbapp.updateType);
+app.delete('/types',  dbapp.deleteType);
+
 app.post('/models',  dbapp.addModel);
+app.put('/models',  dbapp.updateModel);
+app.delete('/models',  dbapp.deleteModel);
 
 app.get('/devices',  dbapp.getDevices);
 app.post('/devices',  dbapp.addDevices);

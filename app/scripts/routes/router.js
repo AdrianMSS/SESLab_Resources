@@ -29,6 +29,12 @@ define([
       },
 
       initialize: function() {
+        //NavbarView.clear();
+        HomeView.clear();
+        TypesView.clear();
+        FamiliesView.clear();
+        DevicesView.clear();
+        ModelsView.clear();
       },
 
       home: function() {

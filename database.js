@@ -101,7 +101,7 @@ exports.addType = function(req, res) {
 };
 
 
-exports.addFamilie = function(req, res) {
+exports.addFamily = function(req, res) {
     var familie = req.body,
         type = req.body.type;
     db.collection('Ids').findOne({},function(err, doc_ids) {
@@ -151,20 +151,6 @@ exports.addModel = function(req, res) {
     });
 };
 
-exports.checkResources = function(req, res) {
-    var resource = req.body,
-        info = '1.1',
-        type = info.split('.')[0],
-        family = info.split('.')[1];
-    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
-        //model['ID'] = type+'.'+family+'.'+newId;
-        var obj = _.find(resource.families, function(obj) { return obj.ID == info }),
-            familyIndex = resource.families.indexOf(obj);   
-        console.log(resource.families[familyIndex].models);
-    });
-};
-
-
 exports.addDevices = function(req, res) {
     var resource = req.body;
     db.collection('Ids').findAndModify({_id:1},{},{$inc:{devices:1}},function(err, doc_ids) {
@@ -172,6 +158,96 @@ exports.addDevices = function(req, res) {
         var newId = doc_ids.devices;
         resource['_id'] = newId;
         db.collection('Dispositivos').insert(resource, function(err, doc_project){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });
+};
+
+exports.updateType = function(req, res) {
+    var newType = req.body,
+        type = req.body._id;
+    console.log(type);
+    console.log(newType);
+    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
+        newType['families'] = resource.families;
+        newType._id = parseInt(type);
+        db.collection('Recursos').update({_id:parseInt(type)},newType,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, newType);
+        });
+    });
+};
+
+exports.updateFamily = function(req, res) {
+    var newFamily = req.body,
+        family = req.body.ID,
+        type = family.split('.')[0];
+    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
+        var fam = _.find(resource.families, function(obj) { return obj.ID == family }),
+            numFam = resource.families.indexOf(fam);
+        newFamily['models'] = resource.families[numFam].models;
+        resource.families.splice(numFam, 1);
+        resource.families.push(newFamily);
+        db.collection('Recursos').update({_id:parseInt(type)},resource,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });
+};
+
+exports.updateModel = function(req, res) {
+    var newModel = req.body,
+        family = req.body.family,
+        model = req.body.ID,
+        type = family.split('.')[0];
+    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
+        var fam = _.find(resource.families, function(obj) { return obj.ID == family }),
+            mod = _.find(fam.models, function(obj) {return obj.ID == model}),
+            numFam = resource.families.indexOf(fam),
+            numMod = resource.families[numFam].models.indexOf(mod); 
+        resource.families[numFam].models.splice(numMod, 1);
+        resource.families[numFam].models.push(newModel);
+        db.collection('Recursos').update({_id:parseInt(type)},resource,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });
+};
+
+exports.deleteType = function(req, res) {
+    var type = req.body._id;
+    db.collection('Recursos').findAndRemove({_id:parseInt(type)},function(err, result) {
+        if(err) throw err;
+        res.send(200, result);   
+    });
+};
+
+exports.deleteFamily = function(req, res) {
+    var family = req.body.ID,
+        type = family.split('.')[0];
+    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
+        var fam = _.find(resource.families, function(obj) { return obj.ID == family }),
+            numFam = resource.families.indexOf(fam); 
+        resource.families.splice(numFam, 1);
+        db.collection('Recursos').update({_id:parseInt(type)},resource,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });
+};
+
+exports.deleteModel = function(req, res) {
+    var model = req.body.ID,
+        family = model.split('.')[0]+'.'+model.split('.')[1],
+        type = model.split('.')[0];
+    db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
+        var fam = _.find(resource.families, function(obj) { return obj.ID == family }),
+            mod = _.find(fam.models, function(obj) {return obj.ID == model}),
+            numFam = resource.families.indexOf(fam),
+            numMod = resource.families[numFam].models.indexOf(mod); 
+        resource.families[numFam].models.splice(numMod, 1);
+        db.collection('Recursos').update({_id:parseInt(type)},resource,{upsert: true, new: true}, function(err, doc_resource){
             if(err) throw err;
             res.send(200, resource);
         });
@@ -189,18 +265,6 @@ exports.dropScript = function(req, res) {
                 else console.log(obj);
             });
         }      
-    });
-    db.collection('Recursos').drop(function(err, reply) {
-        if(err) throw err;
-        else console.log(reply);  
-    });
-    db.collection('Dispositivos').drop(function(err, reply) {
-        if(err) throw err;
-        else console.log(reply);     
-    });
-    db.collection('Metricas').drop(function(err, reply) {
-        if(err) throw err;
-        else console.log(reply);     
     });
     db.collection('Anos').drop(function(err, reply) {
         if(err) throw err;
@@ -225,6 +289,18 @@ exports.dropScript = function(req, res) {
                 else console.log(obj);
             });
         }       
+    });
+    db.collection('Recursos').drop(function(err, reply) {
+        if(err) throw err;
+        else console.log(reply);  
+    });
+    db.collection('Dispositivos').drop(function(err, reply) {
+        if(err) throw err;
+        else console.log(reply);     
+    });
+    db.collection('Metricas').drop(function(err, reply) {
+        if(err) throw err;
+        else console.log(reply);     
     });
 };
 

@@ -14,16 +14,18 @@
   	      <th>Familia de Recursos</th>
           <th>Fabricante</th>
   	      <th>Modelo</th>
-          <th>Relación de Consumo</th>
+          <th>Razón de Consumo</th>
   	      <th>Consumo Estimado</th>
           <th>Características</th>
           <th>Cantidad</th>
+          <th>Imagen</th>
   	      <th>Editar</th>
   	      <th>Eliminar</th>
   	    </tr>
   	  </thead>
   	  <tbody>
-        <% _.each(models, function(obj) {%>
+        <% var modalId = 0;
+        _.each(models, function(obj) {%>
           <% _.each(obj.attributes.families, function(fam) {%>  		    
             <% _.each(fam.models, function(i) {%>
               <tr>
@@ -35,12 +37,13 @@
                 <td><%=i.estimatedConsumption%></td>
                 <td><%=i.characteristics%></td>
                 <td>0</td>
+                <td><img class="tableImage" src=<%=i.image%> /></td>
       		      <td>
-      	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.ID+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+      	    		<span type="button" class="edit" value=<%=modalId%> data-toggle="modal" data-target=<%='#'+modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
       	    	  </td>
-      	          <td><li type="button" class="delete" value=<%=i.ID%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+      	          <td><li type="button" class="delete" id=<%=i.ID+"Delete"%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
       		    </tr>
-            <%});%>
+            <%modalId++;});%>
           <%});%>
   		  <%});%>
   	  </tbody>
@@ -95,7 +98,7 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Relación de Consumo</label>
+            <label>Razón de Consumo</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="text" class="modelRatio" maxlength="40"></input> 
@@ -118,7 +121,23 @@
             <label>Características</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
-            <input type="text" class="modelCharacteristics" maxlength="80"></input> 
+            <textarea rows="4" cols="50" class="modelCharacteristics"></textarea> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Foto</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <form id="uploadForm"
+                  enctype="multipart/form-data"
+                  action="/imageNew"
+                  method="post">
+              <input type="file" id="userPhotoInput" name="userPhoto" />
+            </form>
+            <img id="uploadedImage" />
           </div>
           <br>
           <br>
@@ -131,6 +150,117 @@
     </div>
   </div>
 </div>
+
+
+<% var modalID = 0;
+  _.each(models, function(obj) {%>
+  <% _.each(obj.attributes.families, function(fam) {%>          
+    <% _.each(fam.models, function(i) {%>
+      <div class="modal fade" id=<%=modalID%> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" class="closeModal">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Editar Modelo</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Familia</label>
+                </div> 
+                <div class="col-xs-4 col-sm-4">
+                  <select class=<%=modalID + "modelFamily"%>>
+                    <option value=<%= i.family%>><%= fam.name%></option>
+                    <% _.each(models, function(obj2) {%>
+                      <% _.each(obj2.attributes.families, function(i2) {
+                        if(i2.ID === i.family){}
+                        else{%>
+                        <option value=<%= i2.ID%>><%= i2.name%></option>
+                      <%}});%>
+                    <%});%>
+                  </select>
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Fabricante</label>
+                </div> 
+                <div class="col-xs-4 col-sm-4">
+                  <input type="text" class=<%=modalID + "modelManufacturer"%> maxlength="40" value="<%=i.manufacturer%>"></input>
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Modelo</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <input type="text" class=<%=modalID + "modelModel"%> maxlength="50" value="<%=i.model%>"></input> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Razón de Consumo</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <input type="text" class=<%=modalID + "modelRatio"%> maxlength="40" value="<%=i.consumptionRatio%>"></input> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Consumo Estimado</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <input type="text" class=<%=modalID + "modelConsumption"%> maxlength="40" value="<%=i.estimatedConsumption%>"></input> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Características</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <textarea rows="4" cols="50" class=<%=modalID + "modelCharacteristics"%>><%=i.characteristics%></textarea> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Foto</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <form id=<%=modalID+"uploadForm"%>
+                        class="uploadForm"
+                        enctype="multipart/form-data"
+                        action="/imageNew"
+                        method="post">
+                    <input type="file" class="userPhotoInput" id=<%=modalID+"PhotoInput"%> name="userPhoto" />
+                  </form>
+                  <img class="uploadedImage" id=<%=modalID + "uploadedImage"%> src=<%=i.image%> />
+                </div>
+                <br>
+                <br>
+              </div>
+            </div>  
+            <div class="modal-footer">        
+              <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary saveEdit" value=<%=modalID%> id=<%=i.ID%>>Editar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%modalID++;});%>
+  <%});%>
+<%});%>
 
 <script type="text/javascript">
   // When the document is ready
