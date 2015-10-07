@@ -14,9 +14,11 @@
   	      <th>Familia de Recursos</th>
           <th>Fabricante</th>
   	      <th>Modelo</th>
-          <th>Razón de Consumo</th>
-  	      <th>Consumo Estimado</th>
-          <th>Características</th>
+          <th>Unidad Métrica de Consumo</th>
+  	      <th>Razón de Consumo Estimado</th>
+          <th>Características de Uso de Recurso</th>
+          <th>Características Mecánicas</th>
+          <th>Otras Descripciones</th>
           <th>Cantidad</th>
           <th>Imagen</th>
   	      <th>Editar</th>
@@ -36,6 +38,8 @@
                 <td><%=i.consumptionRatio%></td>
                 <td><%=i.estimatedConsumption%></td>
                 <td><%=i.characteristics%></td>
+                <td><%=i.characteristics2%></td>
+                <td><%=i.characteristics3%></td>
                 <td>0</td>
                 <td><img class="tableImage" src=<%=i.image%> /></td>
       		      <td>
@@ -98,7 +102,7 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Razón de Consumo</label>
+            <label>Unidad Métrica de Consumo</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="text" class="modelRatio" maxlength="40"></input> 
@@ -108,7 +112,7 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Consumo Estimado</label>
+            <label>Razón de Consumo Estimado</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="text" class="modelConsumption" maxlength="40"></input> 
@@ -118,10 +122,30 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Características</label>
+            <label>Características de Uso de Recurso</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <textarea rows="4" cols="50" class="modelCharacteristics"></textarea> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Características Mecánicas</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <textarea rows="4" cols="50" class="modelCharacteristics2"></textarea> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Otras Descripciones</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <textarea rows="4" cols="50" class="modelCharacteristics3"></textarea> 
           </div>
           <br>
           <br>
@@ -205,7 +229,7 @@
               </div>
               <div class="row">       
                 <div class="col-xs-5 col-sm-5">            
-                  <label>Razón de Consumo</label>
+                  <label>Unidad de Medida de Consumo</label>
                 </div> 
                 <div class="col-xs-6 col-sm-6">
                   <input type="text" class=<%=modalID + "modelRatio"%> maxlength="40" value="<%=i.consumptionRatio%>"></input> 
@@ -215,7 +239,7 @@
               </div>
               <div class="row">       
                 <div class="col-xs-5 col-sm-5">            
-                  <label>Consumo Estimado</label>
+                  <label>Razón de Consumo Estimado</label>
                 </div> 
                 <div class="col-xs-6 col-sm-6">
                   <input type="text" class=<%=modalID + "modelConsumption"%> maxlength="40" value="<%=i.estimatedConsumption%>"></input> 
@@ -225,10 +249,30 @@
               </div>
               <div class="row">       
                 <div class="col-xs-5 col-sm-5">            
-                  <label>Características</label>
+                  <label>Características de Uso de Recurso</label>
                 </div> 
                 <div class="col-xs-6 col-sm-6">
                   <textarea rows="4" cols="50" class=<%=modalID + "modelCharacteristics"%>><%=i.characteristics%></textarea> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Características Mecánicas</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <textarea rows="4" cols="50" class=<%=modalID + "modelCharacteristics2"%>><%=i.characteristics2%></textarea> 
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="row">       
+                <div class="col-xs-5 col-sm-5">            
+                  <label>Otras Descipciones</label>
+                </div> 
+                <div class="col-xs-6 col-sm-6">
+                  <textarea rows="4" cols="50" class=<%=modalID + "modelCharacteristics3"%>><%=i.characteristics2%></textarea> 
                 </div>
                 <br>
                 <br>

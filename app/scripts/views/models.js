@@ -67,6 +67,8 @@ define([
         modelRatio = $( '.modelRatio' ).val(),
         modelConsumption = $( '.modelConsumption' ).val(),
         modelCharacteristics = $( '.modelCharacteristics' ).val(),
+        modelCharacteristics2 = $( '.modelCharacteristics2' ).val(),
+        modelCharacteristics3 = $( '.modelCharacteristics3' ).val(),
         modelImage = this.imgPath;
       $.ajax({ 
         url: 'models',
@@ -77,6 +79,8 @@ define([
           'consumptionRatio' : modelRatio,
           'estimatedConsumption' : modelConsumption,
           'characteristics' : modelCharacteristics,
+          'characteristics2' : modelCharacteristics2,
+          'characteristics3' : modelCharacteristics3,
           'family':modelFamily,
           'image': modelImage
         }),
@@ -103,6 +107,8 @@ define([
       modelRatio = $( '.'+e.currentTarget.value+'modelRatio' ).val(),
       modelConsumption = $( '.'+e.currentTarget.value+'modelConsumption' ).val(),
       modelCharacteristics = $( '.'+e.currentTarget.value+'modelCharacteristics' ).val(),
+      modelCharacteristics2 = $( '.'+e.currentTarget.value+'modelCharacteristics2' ).val(),
+      modelCharacteristics3 = $( '.'+e.currentTarget.value+'modelCharacteristics3' ).val(),
       modelImage = $( '#'+e.currentTarget.value+'uploadedImage' ).attr('src'),
       modelID = e.currentTarget.id;
       $.ajax({ 
@@ -114,6 +120,8 @@ define([
           'consumptionRatio' : modelRatio,
           'estimatedConsumption' : modelConsumption,
           'characteristics' : modelCharacteristics,
+          'characteristics2' : modelCharacteristics2,
+          'characteristics3' : modelCharacteristics3,
           'family':modelFamily,
           'image': modelImage,
           'ID': modelID
