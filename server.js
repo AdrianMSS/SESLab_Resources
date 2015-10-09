@@ -56,6 +56,10 @@ app.delete('/models',  dbapp.deleteModel);
 
 app.get('/devices',  dbapp.getDevices);
 app.post('/devices',  dbapp.addDevices);
+app.put('/devices',  dbapp.updateDevices);
+app.delete('/devices',  dbapp.deleteDevices);
+
+app.post('/metricsx',  dbapp.addMetricsVariable);
 
 app.post('/imageNew', dbapp.uploadImage);
 //Redirect the user to the home page if the url is wrong

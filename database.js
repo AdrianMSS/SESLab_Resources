@@ -164,6 +164,23 @@ exports.addDevices = function(req, res) {
     });
 };
 
+
+
+exports.addMetricsVariable = function(req, res) {
+    var resource = req.body,
+        nowMonth = new Date().getMonth(),
+        nowYear= new Date().getFullYear();
+    /*db.collection('Ids').findAndModify({_id:1},{},{$inc:{metrics:1}},function(err, doc_ids) {
+        if(err) throw err;
+        var newId = doc_ids.metrics;
+        resource['_id'] = newId;
+        db.collection('Dispositivos').insert(resource, function(err, doc_project){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });*/
+};
+
 exports.updateType = function(req, res) {
     var newType = req.body,
         type = req.body._id;
@@ -215,6 +232,18 @@ exports.updateModel = function(req, res) {
     });
 };
 
+exports.updateDevices = function(req, res) {
+    var newDevice = req.body,
+        device = req.body._id;
+    db.collection('Dispositivos').findOne({_id:parseInt(device)},function(err, resource) {
+        newDevice._id = parseInt(device);
+        db.collection('Dispositivos').update({_id:parseInt(device)},newDevice,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, newDevice);
+        });
+    });
+};
+
 exports.deleteType = function(req, res) {
     var type = req.body._id;
     db.collection('Recursos').findAndRemove({_id:parseInt(type)},function(err, result) {
@@ -251,6 +280,16 @@ exports.deleteModel = function(req, res) {
             if(err) throw err;
             res.send(200, resource);
         });
+    });
+};
+
+
+
+exports.deleteDevices = function(req, res) {
+    var device = req.body._id;
+    db.collection('Dispositivos').findAndRemove({_id:parseInt(device)},function(err, result) {
+        if(err) throw err;
+        res.send(200, result);   
     });
 };
 

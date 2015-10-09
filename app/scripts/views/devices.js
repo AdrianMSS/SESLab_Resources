@@ -24,7 +24,9 @@ define([
       'changed .deviceType': 'setFamilies',
       'click .deviceFamily': 'deviceFamily',
       'changed .deviceFamily': 'setModels',
-      'click .saveDevice': 'saveDevice'
+      'click .saveDevice': 'saveDevice',
+      'click .saveEdit': 'saveEdit',
+      'click .delete': 'deleteDevice'
     },
 
     initialize: function (options) {
@@ -200,6 +202,66 @@ define([
           if(res.status == 200){   
             this.hidden = false;
             $( '#closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
+    },
+
+    saveEdit: function(e){
+      e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+        deviceId = $( '.'+e.currentTarget.value+'deviceId' ).val(),
+        deviceType = $( '.'+e.currentTarget.value+'deviceType' ).val(),
+        deviceFamily = $( '.'+e.currentTarget.value+'deviceFamily' ).val(),
+        deviceModel = $( '.'+e.currentTarget.value+'deviceModel' ).val(),
+        deviceDescription = $( '.'+e.currentTarget.value+'deviceDescription' ).val(),
+        deviceLocation = $( '.'+e.currentTarget.value+'deviceLocation' ).val(),
+        deviceID = e.currentTarget.id;
+      $.ajax({ 
+        url: 'devices',
+        type: 'PUT',
+        data: JSON.stringify({
+          '_id' : deviceID,
+          'ID' : deviceId,
+          'type' : deviceType,
+          'family' : deviceFamily,
+          'model' : deviceModel,
+          'description' : deviceDescription,
+          'location' : deviceLocation
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
+            setTimeout(this.resourcesFetch, 500, this); 
+          }
+          //console.log(eval('(' + e.responseText + ')').name);
+        }.bind(this)
+      });
+    },
+
+    deleteDevice: function(e){
+      e.preventDefault();
+      var setHeader = function(req){
+        req.setRequestHeader('content-type', 'application/json');
+      },
+        deviceID = e.currentTarget.id.split('D')[0];
+      $.ajax({ 
+        url: 'devices',
+        type: 'DELETE',
+        data: JSON.stringify({
+          '_id': deviceID
+        }),
+        beforeSend : setHeader,
+        complete: function(res){
+          if(res.status == 200){   
+            this.hidden = false;
+            $( '.closeModal' ).trigger('click');
             setTimeout(this.resourcesFetch, 500, this); 
           }
           //console.log(eval('(' + e.responseText + ')').name);

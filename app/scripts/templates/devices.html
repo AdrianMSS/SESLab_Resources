@@ -21,7 +21,8 @@
   	    </tr>
   	  </thead>
   	  <tbody>
-        <% _.each(devices, function(i) {%>
+        <% var modalId = 0;
+        _.each(devices, function(i) {%>
   		    <tr>
   		      <td class="mdl-data-table__cell--non-numeric"><%=i.attributes.ID%></td>
   		      <td><%=types[i.attributes.type]%></td>
@@ -30,11 +31,11 @@
             <td><%=i.attributes.description%></td>
             <td><%=i.attributes.location%></td>
   		      <td>
-  	    		<span type="button" class="edit" value=<%=i.ID%> data-toggle="modal" <%var modalId = '#'+i.attributes._id+'myModalEdit';%> data-target=<%=modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
+  	    		<span type="button" class="edit" value=<%=modalId%> data-toggle="modal" data-target=<%='#'+modalId%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
   	    	  </td>
-  	          <td><li type="button" class="delete" value=<%=i.attributes._id%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
+  	          <td><li type="button" class="delete" id=<%=i.attributes._id+"Delete"%>><a class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="Eliminar" data-original-title="Eliminar"></a></li></td>
   		    </tr>
-  		  <%});%>
+  		  <%modalId++;});%>
   	  </tbody>
   	</table>
   </div>
@@ -125,6 +126,98 @@
     </div>
   </div>
 </div>
+
+<% var modalID = 0;
+_.each(devices, function(i) {%>
+  <div class="modal fade" id=<%=modalID%> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeModal">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Añadir Dispositivo</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Identificador</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <input type="text" class=<%=modalID + "deviceId"%> maxlength="40" value="<%=i.attributes.ID%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Tipo</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <select class=<%=modalID + "deviceType"%> >
+                <% _.each(types, function(element, keys) {%>
+                  <option value=<%=keys%> <%if(parseInt(i.attributes.type) === parseInt(keys)){%>selected<%}else{}%>><%=element%></option>
+                <%});%>
+              </select>
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Familia</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <select class=<%=modalID + "deviceType"%> >
+                <% _.each(families, function(element, keys) {%>
+                  <option value=<%=keys%> <%if(i.attributes.family === keys){%>selected<%}else{}%>><%=element%></option>
+                <%});%>
+              </select>
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Modelo</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <select class=<%=modalID + "deviceModel"%> >
+                <% _.each(models, function(element, keys) {%>
+                  <option value=<%=keys%> <%if(i.attributes.model === keys){%>selected<%}else{}%>><%=element%></option>
+                <%});%>
+              </select>
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Descripción</label>
+            </div> 
+            <div class="col-xs-6 col-sm-6">
+              <input type="text" class=<%=modalID + "deviceDescription"%> maxlength="80" value="<%=i.attributes.description%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Ubicación</label>
+            </div> 
+            <div class="col-xs-6 col-sm-6">
+              <input type="text" class=<%=modalID + "deviceLocation"%> maxlength="50" value="<%=i.attributes.location%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+        </div>  
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary saveEdit" value=<%=modalID%> id=<%=i.attributes._id%>>Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<%modalID++;});%> 
 
 <script type="text/javascript">
   // When the document is ready
