@@ -1,0 +1,20 @@
+/*
+ * Author: Adrián Sánchez
+ */
+body{
+	margin: 0px;
+}
+.header{
+	text-align: center;
+}
+.header div{
+	position: relative;
+	margin: auto;
+	top: 50%;
+}
+h1{
+	color:blue;
+}
+.img-responsive{
+	max-width: 100%;
+}

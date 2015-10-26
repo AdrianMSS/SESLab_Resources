@@ -168,17 +168,24 @@ exports.addDevices = function(req, res) {
 
 exports.addMetricsVariable = function(req, res) {
     var resource = req.body,
-        nowMonth = new Date().getMonth(),
-        nowYear= new Date().getFullYear();
-    /*db.collection('Ids').findAndModify({_id:1},{},{$inc:{metrics:1}},function(err, doc_ids) {
+        nowDate = new Date(),
+        nowYear = nowDate.getFullYear(),
+        nowMonth = nowDate.getMonth()+1,
+        nowDay = nowDate.getDate(),
+        nowHour = nowDate.getHours(),
+        nowMinutes = nowDate.getMinutes(),
+        nowSeconds = nowDate.getSeconds();
+    db.collection('Ids').findAndModify({_id:1},{},{$inc:{metrics:1}},function(err, doc_ids) {
         if(err) throw err;
         var newId = doc_ids.metrics;
-        resource['_id'] = newId;
-        db.collection('Dispositivos').insert(resource, function(err, doc_project){
+        resource['_id'] = parseInt(newId);
+        resource['year'] = parseInt(nowYear);
+        resource['month'] = parseInt(nowMonth);
+        db.collection('Metricas').insert(resource, function(err, doc_project){
             if(err) throw err;
             res.send(200, resource);
         });
-    });*/
+    });
 };
 
 exports.updateType = function(req, res) {

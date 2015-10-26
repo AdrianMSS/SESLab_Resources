@@ -8,7 +8,8 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     cronJob = require('cron').CronJob,
-    dbapp = require('./database');
+    dbapp = require('./database')
+    lecheriaApp = require('./lecheriaDB');
 
 
 /*
@@ -32,10 +33,14 @@ var app = express();
 app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
 app.use(bodyParser());
 app.use(express.multipart());
+app.use('/graphs', express.static(__dirname + '/graphs'));
 app.use(express.static(__dirname + '/app'));
 
 
 
+//Lechería Services
+app.get('/graphs/lifetime', lecheriaApp.getLifetime);
+app.get('/graphs/months', lecheriaApp.getMonths);
 
 
 //REST SERVICES
