@@ -34,7 +34,7 @@ app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
 app.use(bodyParser());
 app.use(express.multipart());
 app.use('/graphs', express.static(__dirname + '/graphs'));
-app.use(express.static(__dirname + '/app'));
+app.use('/resources', express.static(__dirname + '/app'));
 
 
 

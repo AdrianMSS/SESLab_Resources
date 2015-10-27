@@ -19,7 +19,7 @@ db.open(function(err, db) {
 });
 
 exports.getLifetime = function(req, res) {
-    db.collection('lifetime').find().toArray(function(err, doc_res) {
+    db.collection('daily').findOne({_id:1}, function(err, doc_res) {
 
         if(err) throw err;
 

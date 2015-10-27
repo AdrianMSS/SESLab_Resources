@@ -33,17 +33,21 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 function drawChart(dataJson) {
   var data = new google.visualization.DataTable();
-  data.addColumn('number', 'Lectura');
+  data.addColumn('date', 'Día');
   data.addColumn('number', 'Cantidad');
 
 
-  _.each(dataJson[0].production, function(obj, key){
-    data.addRow([key, obj]);
+  dataJson.daily.forEach(function(obj){
+    _.each(obj, function(quantity, key){
+      var dateW1 = key.split('/'),
+        dateW2 = new Date(dateW1[2]+'-'+dateW1[1]+'-'+dateW1[0]);
+      data.addRow([dateW2, quantity]);
+    });
   });
 
   var options = {
-    title: 'Watts Hora Generados por Medición',
-    hAxis: {title: 'Lectura',  titleTextStyle: {color: '#333'}},
+    title: 'Watts Hora Generados por Día',
+    hAxis: {title: 'Día',  titleTextStyle: {color: '#333'}},
     vAxis: {minValue: 0}
   };
 
