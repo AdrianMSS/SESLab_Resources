@@ -7,8 +7,11 @@ define([
   'views/types',
   'views/families',
   'views/devices',
-  'views/models'
-], function ($, Backbone, navbarView, homeView, typesView, familiesView, devicesView, modelsView) {
+  'views/models',
+  'views/admins',
+  'views/drivers',
+  'views/metrics'
+], function ($, Backbone, navbarView, homeView, typesView, familiesView, devicesView, modelsView, adminsView, driversView, metricsView) {
   'use strict';
 
   var NavbarView = new navbarView(),
@@ -17,6 +20,9 @@ define([
     FamiliesView = new familiesView(),
     DevicesView = new devicesView(),
     ModelsView = new modelsView(),
+    AdminsView = new adminsView(),
+    DriversView = new driversView(),
+    MetricsView = new metricsView(),
     nowView = undefined,
     Router = Backbone.Router.extend({
       routes: {
@@ -25,7 +31,10 @@ define([
           'types': 'types',
           'families': 'families',
           'models': 'models',
-          'devices': 'devices'
+          'devices': 'devices',
+          'admins': 'admins',
+          'drivers': 'drivers',
+          'metrics': 'metrics'
       },
 
       initialize: function() {
@@ -35,6 +44,9 @@ define([
         FamiliesView.clear();
         DevicesView.clear();
         ModelsView.clear();
+        AdminsView.clear();
+        DriversView.clear();
+        MetricsView.clear();
       },
 
       home: function() {
@@ -76,6 +88,30 @@ define([
         }
         nowView = DevicesView;
         DevicesView.resourcesFetch(DevicesView);
+      },
+
+      admins: function() {
+        if(nowView){
+          nowView.clear();
+        }
+        nowView = AdminsView;
+        AdminsView.adminsFetch(AdminsView);
+      },
+
+      drivers: function() {
+        if(nowView){
+          nowView.clear();
+        }
+        nowView = DriversView;
+        DriversView.driversFetch(DriversView);
+      },
+
+      metrics: function() {
+        if(nowView){
+          nowView.clear();
+        }
+        nowView = MetricsView;
+        MetricsView.usersFetch(MetricsView);
       }
   });
   return Router;

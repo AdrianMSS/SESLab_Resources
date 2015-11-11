@@ -7,7 +7,7 @@ define([
 
 	var ResourcesCollection = Backbone.Collection.extend({
 		model: resourcesModel,
-		url: '/resources/'
+		url: '/energyresources/resources/'
 	});
 
 	return ResourcesCollection;

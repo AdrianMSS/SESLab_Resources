@@ -8,8 +8,8 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     cronJob = require('cron').CronJob,
-    dbapp = require('./database')
-    lecheriaApp = require('./lecheriaDB');
+    dbapp = require('./resourcesDB'),
+    dbusers = require('./usersDB');
 
 
 /*
@@ -34,35 +34,55 @@ app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
 app.use(bodyParser());
 app.use(express.multipart());
 app.use('/graphs', express.static(__dirname + '/graphs'));
-app.use('/resources', express.static(__dirname + '/app'));
+app.use('/energyresources', express.static(__dirname + '/app'));
 
 
 
 //Lechería Services
-app.get('/graphs/lifetime', lecheriaApp.getLifetime);
-app.get('/graphs/months', lecheriaApp.getMonths);
+app.get('/graphs/lifetime', dbapp.getLifetime);
+app.get('/graphs/months', dbapp.getMonths);
 
 
 //REST SERVICES
 
-app.get('/resources',  dbapp.getResources);
+//app.post('/energyresources/login',  dbusers.loginUser);
+//app.delete('/energyresources/login',  dbusers.logoutUser);
 
-app.post('/families',  dbapp.addFamily);
-app.put('/families',  dbapp.updateFamily);
-app.delete('/families',  dbapp.deleteFamily);
+app.get('/energyresources/admins',  dbusers.getAdmins);
+app.post('/energyresources/admins',  dbusers.addAdmins);
+app.put('/energyresources/admins',  dbusers.updateAdmins);
+app.delete('/energyresources/admins',  dbusers.deleteAdmins);
 
-app.post('/types',  dbapp.addType);
-app.put('/types',  dbapp.updateType);
-app.delete('/types',  dbapp.deleteType);
+app.get('/energyresources/users',  dbusers.getUsers);
+app.get('/energyresources/drivers',  dbusers.getDrivers);
 
-app.post('/models',  dbapp.addModel);
-app.put('/models',  dbapp.updateModel);
-app.delete('/models',  dbapp.deleteModel);
+app.post('/energyresources/users',  dbusers.addUsers);
+app.put('/energyresources/users',  dbusers.updateUsers);
+app.delete('/energyresources/users',  dbusers.deleteUsers);
 
-app.get('/devices',  dbapp.getDevices);
-app.post('/devices',  dbapp.addDevices);
-app.put('/devices',  dbapp.updateDevices);
-app.delete('/devices',  dbapp.deleteDevices);
+app.get('/energyresources/resources',  dbapp.getResources);
+
+app.post('/energyresources/families',  dbapp.addFamily);
+app.put('/energyresources/families',  dbapp.updateFamily);
+app.delete('/energyresources/families',  dbapp.deleteFamily);
+
+app.post('/energyresources/types',  dbapp.addType);
+app.put('/energyresources/types',  dbapp.updateType);
+app.delete('/energyresources/types',  dbapp.deleteType);
+
+app.post('/energyresources/models',  dbapp.addModel);
+app.put('/energyresources/models',  dbapp.updateModel);
+app.delete('/energyresources/models',  dbapp.deleteModel);
+
+app.get('/energyresources/devices',  dbapp.getDevices);
+app.post('/energyresources/devices',  dbapp.addDevices);
+app.put('/energyresources/devices',  dbapp.updateDevices);
+app.delete('/energyresources/devices',  dbapp.deleteDevices);
+
+app.get('/energyresources/metrics',  dbapp.getMetrics);
+app.post('/energyresources/metrics',  dbapp.addMetrics);
+app.put('/energyresources/metrics',  dbapp.updateMetrics);
+app.delete('/energyresources/metrics',  dbapp.deleteMetrics);
 
 app.post('/metricsx',  dbapp.addMetricsVariable);
 

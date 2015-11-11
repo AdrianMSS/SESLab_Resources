@@ -152,7 +152,7 @@ _.each(devices, function(i) {%>
               <label>Tipo</label>
             </div> 
             <div class="col-xs-4 col-sm-4">
-              <select class=<%=modalID + "deviceFamily"%> >
+              <select class=<%=modalID + "deviceType"%> >
                 <% _.each(types, function(element, keys) {%>
                   <option value=<%=keys%> <%if(parseInt(i.attributes.type) === parseInt(keys)){%>selected<%}else{}%>><%=element%></option>
                 <%});%>
@@ -166,7 +166,7 @@ _.each(devices, function(i) {%>
               <label>Familia</label>
             </div> 
             <div class="col-xs-4 col-sm-4">
-              <select class=<%=modalID + "deviceType"%> >
+              <select class=<%=modalID + "deviceFamily"%> >
                 <% _.each(families, function(element, keys) {%>
                   <option value=<%=keys%> <%if(i.attributes.family === keys){%>selected<%}else{}%>><%=element%></option>
                 <%});%>

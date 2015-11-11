@@ -10,6 +10,8 @@
     "body-parser": "*",
     "cron": "*",
     "cookie-session": "*",
+    "crypto": "~0.0.3",
+    "xoauth2": "*",
     "fs": "*"
 	},
   "devDependencies": {
@@ -21,6 +23,8 @@
     "body-parser": "*",
     "cron": "*",
     "cookie-session": "*",
+    "crypto": "~0.0.3",
+    "xoauth2": "*",
     "fs": "*"
   },
   "engines": {

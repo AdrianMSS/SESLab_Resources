@@ -7,7 +7,7 @@ define([
 
 	var DevicesCollection = Backbone.Collection.extend({
 		model: DevicesModel,
-		url: '/devices/'
+		url: '/energyresources/devices/'
 	});
 
 	return DevicesCollection;

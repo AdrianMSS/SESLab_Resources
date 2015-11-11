@@ -42,7 +42,11 @@ require.config({
         
         //Collections
         devicesCollection: 'collections/devices',
-        resourcesCollection: 'collections/resources'
+        resourcesCollection: 'collections/resources',
+        adminsCollection: 'collections/admins',
+        usersCollection: 'collections/users',
+        driversCollection: 'collections/drivers',
+        metricsCollection: 'collections/metrics'
     }
 });
 

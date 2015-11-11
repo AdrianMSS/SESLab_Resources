@@ -1,6 +1,7 @@
 var mongo = require('mongodb'),
     _ = require('underscore'),
-    fs = require('fs');
+    fs = require('fs'),
+    lecheriaApp = require('./lecheriaDB');
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -12,11 +13,23 @@ db = new Db('SESLab', server);
 db.open(function(err, db) {
     if(!err) {
         console.log('Connected to "SESLab" database');
+        var db2 = db.db('Lecheria');
+        lecheriaApp.setDB(db2);
     }
     else{
         console.log(404, 'Error Connecting to "SESLab" database');
     }
 });
+
+/*Lecheria Services*/
+
+exports.getLifetime = function(req, res) {
+    lecheriaApp.getLifetime(req,res);
+};
+
+exports.getMonths = function(req, res) {
+    lecheriaApp.getMonths(req,res);
+};
 
 
 
@@ -32,7 +45,6 @@ exports.monthScript = function(req, res) {
             if(!doc_years){
                 db.collection('Anos').insert({_id:yearId, year:year}, function(error, result){
                     if(error)throw error;
-                    console.log(result);
                 })
             }
         });
@@ -41,7 +53,6 @@ exports.monthScript = function(req, res) {
             if(!doc_months){
                 db.collection('Meses').insert({_id:monthId, year:year, month:month}, function(error, result){
                     if(error)throw error;
-                    console.log(result);
                 })
             }
         });
@@ -77,6 +88,14 @@ exports.getDevices = function(req, res) {
         else {
             res.send(200, doc_res);
         }
+    });
+};
+
+exports.getMetrics = function(req, res) {
+    db.collection('Metricas').find().toArray(function(err, doc_res) {
+        if(err) throw err;
+        if (!doc_res) console.log("No document found");      
+        res.send(200, doc_res);
     });
 };
 
@@ -164,6 +183,29 @@ exports.addDevices = function(req, res) {
     });
 };
 
+exports.addMetrics = function(req, res) {
+    var resource = req.body;
+    db.collection('Ids').findAndModify({_id:1},{},{$inc:{metrics:1}},function(err, doc_ids) {
+        if(err) throw err;
+        var newId = doc_ids.devices;
+        resource['_id'] = newId;
+        nowDate = new Date(),
+        nowYear = nowDate.getFullYear(),
+        nowMonth = nowDate.getMonth()+1,
+        nowDay = nowDate.getDate(),
+        nowHour = nowDate.getHours(),
+        nowMinutes = nowDate.getMinutes(),
+        nowSeconds = nowDate.getSeconds();
+        resource['_id'] = parseInt(newId);
+        resource['year'] = parseInt(nowYear);
+        resource['month'] = parseInt(nowMonth);
+        db.collection('Metricas').insert(resource, function(err, doc_project){
+            if(err) throw err;
+            res.send(200, resource);
+        });
+    });
+};
+
 
 
 exports.addMetricsVariable = function(req, res) {
@@ -191,8 +233,6 @@ exports.addMetricsVariable = function(req, res) {
 exports.updateType = function(req, res) {
     var newType = req.body,
         type = req.body._id;
-    console.log(type);
-    console.log(newType);
     db.collection('Recursos').findOne({_id:parseInt(type)},function(err, resource) {
         newType['families'] = resource.families;
         newType._id = parseInt(type);
@@ -251,6 +291,20 @@ exports.updateDevices = function(req, res) {
     });
 };
 
+exports.updateMetrics = function(req, res) {
+    var newMetric = req.body,
+        metric = req.body._id;
+    db.collection('Metricas').findOne({_id:parseInt(metric)},function(err, resource) {
+        newMetric['year'] = resource.year;
+        newMetric['month'] = resource.month;
+        newMetric['_id'] = parseInt(metric);
+        db.collection('Metricas').update({_id:parseInt(metric)},newMetric,{upsert: true, new: true}, function(err, doc_resource){
+            if(err) throw err;
+            res.send(200, newMetric);
+        });
+    });
+};
+
 exports.deleteType = function(req, res) {
     var type = req.body._id;
     db.collection('Recursos').findAndRemove({_id:parseInt(type)},function(err, result) {
@@ -300,11 +354,18 @@ exports.deleteDevices = function(req, res) {
     });
 };
 
+exports.deleteMetrics = function(req, res) {
+    var metric = req.body._id;
+    db.collection('Metricas').findAndRemove({_id:parseInt(metric)},function(err, result) {
+        if(err) throw err;
+        res.send(200, result);   
+    });
+};
+
 exports.dropScript = function(req, res) {
     db.collection('Ids').drop(function(err, reply) {
         if(err) throw err;
         else {
-            console.log(reply);
             var obj = {_id:1, resources:{}, devices:1, years:2, months:2, metrics:1};
             db.collection('Ids').insert(obj, function(error, doc) {
                 if(error) throw error;
@@ -315,7 +376,6 @@ exports.dropScript = function(req, res) {
     db.collection('Anos').drop(function(err, reply) {
         if(err) throw err;
         else {
-            console.log(reply);
             var year = new Date().getFullYear();
             var obj = {_id:1, year:year};
             db.collection('Anos').insert(obj, function(error, doc) {
@@ -327,7 +387,6 @@ exports.dropScript = function(req, res) {
     db.collection('Meses').drop(function(err, reply) {
         if(err) throw err;
         else {
-            console.log(reply);
             var month = new Date().getMonth()+1;
             var obj = {_id:1, month:month, year:1};
             db.collection('Meses').insert(obj, function(error, doc) {
