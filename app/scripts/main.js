@@ -27,6 +27,30 @@ require.config({
         },
         componentHandler: {
             exports: 'componentHandler'
+        },
+        autocomplete: {
+            deps: [
+                'core',
+                'widget',
+                'position',
+                'menu'
+            ]
+        },
+        core: {
+            deps: ['jquery']
+        },
+        menu: {
+            deps: [
+                'core',
+                'widget',
+                'position'
+            ]
+        },
+        position: {
+            deps: ['jquery']
+        },
+        widget: {
+            deps: ['jquery']
         }
     },
     paths: {
@@ -39,6 +63,12 @@ require.config({
         text: '../bower_components/text/text',
         jquery_form: '../bower_components/jquery_form/jquery.form',
         componentHandler: '../bower_components/googlecomponentHandler/material',
+        autocomplete: '../bower_components/jqueryui/ui/autocomplete',
+        core: '../bower_components/jqueryui/ui/core',
+        menu: '../bower_components/jqueryui/ui/menu',
+        position: '../bower_components/jqueryui/ui/position',
+        widget: '../bower_components/jqueryui/ui/widget',
+        
         
         //Collections
         devicesCollection: 'collections/devices',
@@ -46,7 +76,8 @@ require.config({
         adminsCollection: 'collections/admins',
         usersCollection: 'collections/users',
         driversCollection: 'collections/drivers',
-        metricsCollection: 'collections/metrics'
+        metricsCollection: 'collections/metrics',
+        carmetricsCollection: 'collections/carmetrics'
     }
 });
 

@@ -10,8 +10,9 @@ define([
   'views/models',
   'views/admins',
   'views/drivers',
-  'views/metrics'
-], function ($, Backbone, navbarView, homeView, typesView, familiesView, devicesView, modelsView, adminsView, driversView, metricsView) {
+  'views/metrics',
+  'views/carmetrics'
+], function ($, Backbone, navbarView, homeView, typesView, familiesView, devicesView, modelsView, adminsView, driversView, metricsView, carmetricsView) {
   'use strict';
 
   var NavbarView = new navbarView(),
@@ -23,6 +24,7 @@ define([
     AdminsView = new adminsView(),
     DriversView = new driversView(),
     MetricsView = new metricsView(),
+    CarmetricsView = new carmetricsView(),
     nowView = undefined,
     Router = Backbone.Router.extend({
       routes: {
@@ -34,7 +36,8 @@ define([
           'devices': 'devices',
           'admins': 'admins',
           'drivers': 'drivers',
-          'metrics': 'metrics'
+          'metrics': 'metrics',
+          'carsmetrics': 'carsmetrics'
       },
 
       initialize: function() {
@@ -112,6 +115,14 @@ define([
         }
         nowView = MetricsView;
         MetricsView.usersFetch(MetricsView);
+      },
+
+      carsmetrics: function() {
+        if(nowView){
+          nowView.clear();
+        }
+        nowView = CarmetricsView;
+        CarmetricsView.usersFetch(CarmetricsView);
       }
   });
   return Router;

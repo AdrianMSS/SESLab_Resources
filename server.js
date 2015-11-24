@@ -84,6 +84,11 @@ app.post('/energyresources/metrics',  dbapp.addMetrics);
 app.put('/energyresources/metrics',  dbapp.updateMetrics);
 app.delete('/energyresources/metrics',  dbapp.deleteMetrics);
 
+app.get('/energyresources/carmetrics',  dbapp.getCarmetrics);
+app.post('/energyresources/carmetrics',  dbapp.addCarmetrics);
+app.put('/energyresources/carmetrics',  dbapp.updateCarmetrics);
+app.delete('/energyresources/carmetrics',  dbapp.deleteCarmetrics);
+
 app.post('/metricsx',  dbapp.addMetricsVariable);
 
 app.post('/imageNew', dbapp.uploadImage);
