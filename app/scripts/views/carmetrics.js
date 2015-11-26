@@ -53,7 +53,7 @@ define([
       }
       $(".metricDevice").autocomplete({source: devices2});
       $(".metricUser").autocomplete({source: users2});
-      $("#datepicker").datepicker({dateFormat:'dd/mm/yy'});
+      $(".datepicker").datepicker({dateFormat:'dd/mm/yy'});
     },
 
     metricsFetch: function(that){
@@ -129,7 +129,7 @@ define([
         metricValue2 = $( '.metricValue2' ).val(),
         metricValue3 = $( '.metricValue3' ).val(),
         metricValue4 = $( '.metricValue4' ).val(),
-        metricDate = $( '.metricDate' ).val();
+        metricDate = $( '#metricDate' ).val();
       $.ajax({ 
         url: 'carmetrics',
         type: 'POST',
@@ -163,6 +163,9 @@ define([
         metricUser = $( '.'+e.currentTarget.value+'metricUser' ).val(),
         metricValue = $( '.'+e.currentTarget.value+'metricValue' ).val(),
         metricValue2 = $( '.'+e.currentTarget.value+'metricValue2' ).val(),
+        metricValue3 = $( '.'+e.currentTarget.value+'metricValue3' ).val(),
+        metricValue4 = $( '.'+e.currentTarget.value+'metricValue4' ).val(),
+        metricDate = $( '#'+e.currentTarget.value+'metricDate' ).val(),
         metricID = e.currentTarget.id;
       $.ajax({ 
         url: 'carmetrics',
@@ -171,8 +174,11 @@ define([
           '_id' : metricID,
           'ID' : metricDevice,
           'user' : metricUser,
-          'value' : metricValue,
-          'km' : metricValue2
+          'liters': metricValue,
+          'km': metricValue2,
+          'amount': metricValue3,
+          'bill': metricValue4,
+          'date': metricDate
         }),
         beforeSend : setHeader,
         complete: function(res){

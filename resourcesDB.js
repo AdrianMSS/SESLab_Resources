@@ -336,10 +336,16 @@ exports.updateMetrics = function(req, res) {
 exports.updateCarmetrics = function(req, res) {
     var newMetric = req.body,
         metric = req.body._id;
+        console.log(newMetric);
     db.collection('MetricasAutomoviles').findOne({_id:parseInt(metric)},function(err, resource) {
-        newMetric['year'] = resource.year;
-        newMetric['month'] = resource.month;
+        month = newMetric.date.split('/')[1];
+        year = newMetric.date.split('/')[2];
+        newMetric['year'] = parseInt(year);
+        newMetric['month'] = parseInt(month);
         newMetric['_id'] = parseInt(metric);
+        newMetric.liters = parseFloat(newMetric.liters);
+        newMetric.km = parseFloat(newMetric.km);
+        newMetric.amount = parseFloat(newMetric.amount);
         db.collection('MetricasAutomoviles').update({_id:parseInt(metric)},newMetric,{upsert: true, new: true}, function(err, doc_resource){
             if(err) throw err;
             res.send(200, newMetric);

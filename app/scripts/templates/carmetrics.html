@@ -129,7 +129,7 @@
             <label>Fecha</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
-            <input type="text" id="datepicker" class="metricDate">
+            <input type="text" class="datepicker" id="metricDate">
           </div>
           <br>
           <br>
@@ -218,7 +218,7 @@ _.each(models, function(i) {%>
               <label>Fecha</label>
             </div> 
             <div class="col-xs-4 col-sm-4">
-              <input type="text" class=<%=modalID + "metricDate"%> value="<%=i.attributes.date%>"></input> 
+              <input type="text"  class="datepicker" id=<%=modalID + "metricDate"%> value="<%=i.attributes.date%>"></input> 
             </div>
             <br>
             <br>
