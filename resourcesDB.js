@@ -219,17 +219,14 @@ exports.addCarmetrics = function(req, res) {
     db.collection('Ids').findAndModify({_id:1},{},{$inc:{carmetrics:1}},function(err, doc_ids) {
         if(err) throw err;
         var newId = doc_ids.carmetrics;
-        resource['_id'] = newId;
-        nowDate = new Date(),
-        nowYear = nowDate.getFullYear(),
-        nowMonth = nowDate.getMonth()+1,
-        nowDay = nowDate.getDate(),
-        nowHour = nowDate.getHours(),
-        nowMinutes = nowDate.getMinutes(),
-        nowSeconds = nowDate.getSeconds();
+        month = resource.date.split('/')[1];
+        year = resource.date.split('/')[2];
         resource['_id'] = parseInt(newId);
-        resource['year'] = parseInt(nowYear);
-        resource['month'] = parseInt(nowMonth);
+        resource['year'] = parseInt(year);
+        resource['month'] = parseInt(month);
+        resource.liters = parseFloat(resource.liters);
+        resource.km = parseFloat(resource.km);
+        resource.amount = parseFloat(resource.amount);
         db.collection('MetricasAutomoviles').insert(resource, function(err, doc_project){
             if(err) throw err;
             res.send(200, resource);

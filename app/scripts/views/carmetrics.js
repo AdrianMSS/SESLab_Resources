@@ -7,8 +7,9 @@ define([
   'devicesCollection',
   'text!../templates/carmetrics.html',
   'componentHandler',
-  'autocomplete'
-], function ($, _, Backbone, usersCollection, carmetricsCollection, devicesCollection, metrics_template, componentHandler, autocomplete) {
+  'autocomplete',
+  'datepicker'
+], function ($, _, Backbone, usersCollection, carmetricsCollection, devicesCollection, metrics_template, componentHandler, autocomplete, datepicker) {
   'use strict';
   var UsersCollection = new usersCollection(),
   CarmetricsCollection = new carmetricsCollection(),
@@ -52,6 +53,7 @@ define([
       }
       $(".metricDevice").autocomplete({source: devices2});
       $(".metricUser").autocomplete({source: users2});
+      $("#datepicker").datepicker({dateFormat:'dd/mm/yy'});
     },
 
     metricsFetch: function(that){
@@ -123,16 +125,22 @@ define([
       },
         metricDevice = $( '.metricDevice' ).val(),
         metricUser = $( '.metricUser' ).val(),
-        metricValue = $( '.metricValue' ).val(),
-        metricValue2 = $( '.metricValue2' ).val();
+        metricValue =  $( '.metricValue' ).val(),
+        metricValue2 = $( '.metricValue2' ).val(),
+        metricValue3 = $( '.metricValue3' ).val(),
+        metricValue4 = $( '.metricValue4' ).val(),
+        metricDate = $( '.metricDate' ).val();
       $.ajax({ 
         url: 'carmetrics',
         type: 'POST',
         data: JSON.stringify({
           'ID' : metricDevice,
           'user' : metricUser,
-          'value': metricValue,
-          'km': metricValue2
+          'liters': metricValue,
+          'km': metricValue2,
+          'amount': metricValue3,
+          'bill': metricValue4,
+          'date': metricDate
         }),
         beforeSend : setHeader,
         complete: function(res){

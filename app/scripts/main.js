@@ -46,6 +46,12 @@ require.config({
                 'position'
             ]
         },
+        datepicker: {
+            deps: [
+                'core',
+                'jquery'
+            ]
+        },
         position: {
             deps: ['jquery']
         },
@@ -68,6 +74,7 @@ require.config({
         menu: '../bower_components/jqueryui/ui/menu',
         position: '../bower_components/jqueryui/ui/position',
         widget: '../bower_components/jqueryui/ui/widget',
+        datepicker: '../bower_components/jqueryui/ui/datepicker',
         
         
         //Collections

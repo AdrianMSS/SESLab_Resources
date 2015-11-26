@@ -14,10 +14,13 @@
   	      <th>Dispositivo</th>
   	      <th>Descripción</th>
           <th>Usuario</th>
+          <th>Fecha</th>
           <th>Mes</th>
           <th>Año</th>
-          <th>Valor</th>
+          <th>Litros</th>
           <th>Km</th>
+          <th>Monto</th>
+          <th>Factura</th>
           <th>Editar</th>
   	      <th>Eliminar</th>
   	    </tr>
@@ -30,10 +33,13 @@
   		      <td><%=i.attributes.ID%></td>
             <td><%=devices[i.attributes.ID]%></td>
             <td><%=users[i.attributes.user]%></td>
+            <td><%=i.attributes.date%></td>
             <td><%=months[i.attributes.month]%></td>
             <td><%=i.attributes.year%></td>
-            <td><%=i.attributes.value%></td>
+            <td><%=i.attributes.liters%></td>
             <td><%=i.attributes.km%></td>
+            <td><%=i.attributes.amount%></td>
+            <td><%=i.attributes.bill%></td>
             <td>
             <span type="button" class="edit" value=<%=modalId%> data-toggle="modal" data-target=<%='#'+modalId+"modal"%>><a class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="right" title="Editar" data-original-title="Editar"></a> </span>
             </td>
@@ -80,7 +86,7 @@
         </div>
         <div class="row">       
           <div class="col-xs-5 col-sm-5">            
-            <label>Valor</label>
+            <label>Litros</label>
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="number" class="metricValue" min="0" value=0></input> 
@@ -94,6 +100,36 @@
           </div> 
           <div class="col-xs-6 col-sm-6">
             <input type="number" class="metricValue2" min="0" value=0></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Monto</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="number" class="metricValue3" min="0" value=0></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Factura</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="number" class="metricValue4" min="0" value=0></input> 
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="row">       
+          <div class="col-xs-5 col-sm-5">            
+            <label>Fecha</label>
+          </div> 
+          <div class="col-xs-6 col-sm-6">
+            <input type="text" id="datepicker" class="metricDate">
           </div>
           <br>
           <br>
@@ -139,10 +175,10 @@ _.each(models, function(i) {%>
           </div>
           <div class="row">       
             <div class="col-xs-5 col-sm-5">            
-              <label>Valor</label>
+              <label>Litros</label>
             </div> 
             <div class="col-xs-4 col-sm-4">
-              <input type="number" class=<%=modalID + "metricValue"%> min="0" value="<%=i.attributes.value%>"></input> 
+              <input type="number" class=<%=modalID + "metricValue"%> min="0" value="<%=i.attributes.liters%>"></input> 
             </div>
             <br>
             <br>
@@ -153,6 +189,36 @@ _.each(models, function(i) {%>
             </div> 
             <div class="col-xs-4 col-sm-4">
               <input type="number" class=<%=modalID + "metricValue2"%> min="0" value="<%=i.attributes.km%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Monto</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <input type="number" class=<%=modalID + "metricValue3"%> min="0" value="<%=i.attributes.amount%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Factura</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <input type="number" class=<%=modalID + "metricValue4"%> min="0" value="<%=i.attributes.bill%>"></input> 
+            </div>
+            <br>
+            <br>
+          </div>
+          <div class="row">       
+            <div class="col-xs-5 col-sm-5">            
+              <label>Fecha</label>
+            </div> 
+            <div class="col-xs-4 col-sm-4">
+              <input type="text" class=<%=modalID + "metricDate"%> value="<%=i.attributes.date%>"></input> 
             </div>
             <br>
             <br>
